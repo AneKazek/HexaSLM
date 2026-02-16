@@ -1,0 +1,122 @@
+[project]
+name = "hexa-slm"
+version = "0.1.0"
+description = "HexaSLM: Fine-tuning and Inference with Unsloth"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = {text = "MIT"}
+keywords = ["llm", "fine-tuning", "unsloth", "loRA", "inference"]
+
+dependencies = [
+    # Core ML libraries
+    "torch>=2.1.0",
+    "transformers>=4.36.0",
+    "datasets>=2.14.0",
+    "accelerate>=0.25.0",
+    "peft>=0.7.0",
+    "trl>=0.7.0",
+    "bitsandbytes>=0.41.0",
+    
+    # Unsloth (install from git - see note below)
+    # "unsloth @ git+https://github.com/unslothai/unsloth.git",
+    "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git",
+    
+    # Optimization
+    "xformers>=0.0.23",
+    "einops>=0.7.0",
+    
+    # Data processing
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "tqdm>=4.66.0",
+    
+    # Utilities
+    "huggingface-hub>=0.19.0",
+    "tokenizers>=0.15.0",
+    "sentencepiece>=0.1.99",
+    "protobuf>=3.20.0",
+    "fire>=0.5.0",
+    
+    # Monitoring (optional)
+    "tensorboard>=2.15.0",
+    "wandb>=0.16.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Development tools
+    "jupyter>=1.0.0",
+    "ipython>=8.18.0",
+    "ipywidgets>=8.1.0",
+    
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    
+    # Code quality
+    "black>=23.12.0",
+    "ruff>=0.1.0",
+    "mypy>=1.7.0",
+]
+
+evaluation = [
+    # Evaluation metrics
+    "scikit-learn>=1.3.0",
+    "rouge-score>=0.1.2",
+    "bert-score>=0.3.13",
+]
+
+export = [
+    # Model export & optimization
+    "onnx>=1.15.0",
+    "onnxruntime>=1.16.0",
+    "optimum>=1.15.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv]
+# UV-specific configurations
+index-url = "https://pypi.org/simple"
+
+# Exclude packages that should be installed separately
+# (unsloth needs special handling)
+no-binary = []
+
+[tool.uv.sources]
+# Unsloth from git (UV format)
+unsloth = { git = "https://github.com/unslothai/unsloth.git" }
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "W", "I", "N"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+addopts = "-v --cov=src --cov-report=html --cov-report=term"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hexa_slm"]
