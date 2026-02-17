@@ -3,6 +3,7 @@
 <div align="center">
 
 ![HexaSLM Logo](https://img.shields.io/badge/Hexa-SLM-blue?style=for-the-badge&logo=python&logoColor=white)
+[![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-anekazek%2Fhexaslm--qwen2.5--cybersec--cove-yellow.svg)](https://huggingface.co/anekazek/hexaslm-qwen2.5-cybersec-cove)
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
