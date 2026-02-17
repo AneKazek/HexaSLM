@@ -17,12 +17,17 @@ console = Console()
 def chat(
     model_path: str = typer.Option("models/cove_cybersec_lora", help="Path to the model or HuggingFace ID"),
     use_4bit: bool = typer.Option(True, help="Use 4-bit quantization"),
-    system_prompt: str = typer.Option("You are a cybersecurity expert assistant.", help="System prompt for the chat")
+    system_prompt: str = typer.Option("You are a cybersecurity expert assistant.", help="System prompt for the chat"),
+    cove: bool = typer.Option(False, "--cove", help="Enable Chain of Verification (CoVe) mode")
 ):
     """
     Start an interactive chat session with the HexaSLM model.
     """
     console.print(Panel.fit("[bold cyan]HexaSLM Interactive Chat[/bold cyan]", border_style="cyan"))
+    
+    if cove:
+        console.print("[bold yellow]🧠 Chain of Verification (CoVe) Mode Enabled[/bold yellow]")
+        system_prompt = "You are a cybersecurity expert. Verify all advice systematically."
     
     with console.status("[bold green]Loading model...[/bold green]", spinner="dots"):
         try:
@@ -46,6 +51,9 @@ def chat(
     messages = [
         {"role": "system", "content": system_prompt}
     ]
+    
+    # CoVe Assistant Starter
+    cove_starter = "\nLet me provide thoroughly verified cybersecurity guidance.\n\n**Step 1 - Initial Analysis:**"
 
     while True:
         user_input = Prompt.ask("[bold blue]User[/bold blue]")
@@ -58,16 +66,25 @@ def chat(
         
         # Format input
         try:
-            inputs = tokenizer.apply_chat_template(
+            # Apply chat template
+            inputs_text = tokenizer.apply_chat_template(
                 messages,
-                tokenize=True,
+                tokenize=False,
                 add_generation_prompt=True,
-                return_tensors="pt",
-            ).to("cuda")
+            )
+            
+            # If CoVe is enabled, append the assistant's thought process starter
+            if cove:
+                inputs_text += cove_starter
+                
+            inputs = tokenizer(inputs_text, return_tensors="pt").to("cuda")
+            
         except Exception as e:
              # Fallback if chat template issues
-             text_prompt = f"{system_prompt}\n\natUser: {user_input}\nAssistant: "
-             inputs = tokenizer(text_prompt, return_tensors="pt").input_ids.to("cuda")
+             text_prompt = f"{system_prompt}\n\nUser: {user_input}\nAssistant: "
+             if cove:
+                 text_prompt += cove_starter
+             inputs = tokenizer(text_prompt, return_tensors="pt").to("cuda")
 
         # Streamer
         streamer = get_streamer(tokenizer)

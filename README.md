@@ -21,9 +21,10 @@
 ## 🚀 Features
 
 - **⚡ Blazing Fast**: 2x faster training and 70% less memory usage with Unsloth.
+- **🧠 Chain of Verification**: Implements CoVe to reduce hallucinations and verify cybersecurity advice.
 - **🛡️ Cybersecurity Focused**: Pre-configured data pipelines for cybersecurity datasets.
 - **🖥️ CLI Interface**: Rich, interactive terminal chat for testing your models.
-- **📦 Modular**: valid Python package structure for easy integration.
+- **📦 Modular**: Valid Python package structure for easy integration.
 
 ## 🛠️ Data Flow
 
@@ -33,9 +34,11 @@ graph LR
     B -->|Fine-tune| C{Unsloth Model}
     C -->|Save| D[LoRA Adapters]
     D -->|Load| E[Inference CLI]
-    E -->|Chat| F((User))
+    E -->|CoVe| F[Verified Output]
+    F -->|Chat| G((User))
     style C fill:#f96,stroke:#333
     style E fill:#9cf,stroke:#333
+    style F fill:#6f9,stroke:#333
 ```
 
 ## ⚡ Quick Start
@@ -86,6 +89,21 @@ Options:
   --help                  Show this message and exit.
 ```
 </details>
+
+### 🧠 Chain of Verification (CoVe)
+
+HexaSLM implements a systematic **Chain of Verification** process to ensure high-quality, secure responses.
+
+```bash
+# Enable CoVe mode in CLI
+python -m hexa_slm.inference.console --cove
+```
+
+When enabled, the model follows a 4-step reasoning process:
+1.  **Initial Analysis**: Breaks down the request.
+2.  **Verification Planning**: Identifies critical security checks.
+3.  **Systematic Verification**: Validates against OWASP/NIST standards.
+4.  **Final Verified Response**: Delivers the safe, verified answer.
 
 ## 📚 Documentation
 
