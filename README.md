@@ -1,4 +1,4 @@
-# HexaSLM: Advanced Fine-Tuning & Inference
+# HexaSLM: Can Chain-of-Verification Secure the Cybersecurity Domain?
 
 <div align="center">
 
