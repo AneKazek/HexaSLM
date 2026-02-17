@@ -3,12 +3,12 @@ name = "hexa-slm"
 version = "0.1.0"
 description = "HexaSLM: Fine-tuning and Inference with Unsloth"
 authors = [
-    {name = "Your Name", email = "your.email@example.com"}
+    {name = "Muhammad Dzaky Haidar", email = "dzaky.haidar@example.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
-license = {text = "MIT"}
-keywords = ["llm", "fine-tuning", "unsloth", "loRA", "inference"]
+license = {text = "Apache-2.0"}
+keywords = ["llm", "fine-tuning", "unsloth", "loRA", "inference", "cybersecurity"]
 
 dependencies = [
     # Core ML libraries
@@ -40,10 +40,17 @@ dependencies = [
     "protobuf>=3.20.0",
     "fire>=0.5.0",
     
+    # CLI & UI
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    
     # Monitoring (optional)
     "tensorboard>=2.15.0",
     "wandb>=0.16.0",
 ]
+
+[project.scripts]
+hexaslm = "hexa_slm.inference.console:app"
 
 [project.optional-dependencies]
 dev = [
@@ -89,7 +96,7 @@ index-url = "https://pypi.org/simple"
 
 # Exclude packages that should be installed separately
 # (unsloth needs special handling)
-no-binary = []
+
 
 [tool.uv.sources]
 # Unsloth from git (UV format)
